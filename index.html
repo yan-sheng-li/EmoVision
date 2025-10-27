@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>人脸识别检测</title>
+  <script defer src="face-api.min.js"></script>
+  <script defer src="./script.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    #container {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    video {
+      border: 2px solid #333;
+      border-radius: 10px;
+    }
+
+    canvas {
+      position: absolute;
+    }
+
+    #controls {
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <h1>人脸识别检测</h1>
+  <div>
+    <video id="video" width="720" height="560" autoplay muted></video>
+  </div>
+  <div id="controls">
+    <button class="btn" onclick="startVideo()">开始视频</button>
+    <button class="btn" onclick="stopVideo()">停止视频</button>
+    <button class="btn" onclick="captureImage()">捕获图像</button>
+  </div>
+</div>
+<script>
+  function startVideo() {
+    const video = document.getElementById('video');
+    navigator.mediaDevices.getUserMedia({ video: {} })
+      .then(stream => {
+        video.srcObject = stream;
+      })
+      .catch(err => console.error(err));
+  }
+
+  function stopVideo() {
+    const video = document.getElementById('video');
+    const stream = video.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+    video.srcObject = null;
+  }
+
+  function captureImage() {
+    const video = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageUrl = canvas.toDataURL('image/png');
+    const newWindow = window.open();
+    newWindow.document.write(`<img src="${imageUrl}" alt="Captured Image"/>`);
+  }
+</script>
+</body>
+</html>
