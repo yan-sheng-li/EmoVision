@@ -1,10 +1,10 @@
 const video = document.getElementById('video') // 获取video标签元素
 
 Promise.all([ // 并行加载模型
-  faceapi.nets.tinyFaceDetector.loadFromUri('/models'), // 加载小型面部检测器模型
-  faceapi.nets.faceLandmark68Net.loadFromUri('/models'), // 加载面部68个关键点检测模型
-  faceapi.nets.faceRecognitionNet.loadFromUri('/models'), // 加载面部识别模型
-  faceapi.nets.faceExpressionNet.loadFromUri('/models') // 加载面部表情识别模型
+  faceapi.nets.tinyFaceDetector.loadFromUri('./models'), // 加载小型面部检测器模型
+  faceapi.nets.faceLandmark68Net.loadFromUri('./models'), // 加载面部68个关键点检测模型
+  faceapi.nets.faceRecognitionNet.loadFromUri('./models'), // 加载面部识别模型
+  faceapi.nets.faceExpressionNet.loadFromUri('./models') // 加载面部表情识别模型
 ]).then(startVideo) // 所有模型加载完成后执行startVideo函数
 
 async function startVideo() { // 异步函数用于启动视频流
